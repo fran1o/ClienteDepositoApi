@@ -1,0 +1,69 @@
+﻿@using LogicaNegocio.Entidades
+@model PageViewModel<Articulo>
+
+@{
+    ViewData["Title"] = "";
+    string desde = ViewContext.HttpContext.Request.Query["desde"];
+    string hasta = ViewContext.HttpContext.Request.Query["hasta"];
+    var nextPageUrl = Url.Action("ArtPorFechas", new { desde = @desde, hasta = @hasta, page = Model.PageNumber + 1 });
+    var prevPageUrl = Url.Action("ArtPorFechas", new { desde = @desde, hasta = @hasta, page = Model.PageNumber - 1 });
+
+}
+
+<h1>Articulos con movimientos entre un rango de fechas </h1>
+
+
+<form action="ArtPorFechas">
+    <label>Desde</label>
+    <input type="date" name="desde" value="@desde"/>
+    <label>Hasta</label>
+    <input type="date" name="hasta" value="@hasta" />
+    <button type="submit">Buscar</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th> Id  </th>
+            <th> Código Artículo </th>
+            <th> Nombre Artículo </th>
+            <th> Descripción </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Articulo item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Codigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreArt.Value)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div>
+    Página @(Model.PageNumber + 1) de @Model.TotalPages
+</div>
+
+<div>
+    @if (Model.PageNumber > 1)
+    {
+        <a href="@prevPageUrl">Anterior</a>
+    }
+
+    @if (Model.PageNumber + 1 < Model.TotalPages)
+    {
+        <a href="@nextPageUrl">Siguiente</a>
+    }
+</div>

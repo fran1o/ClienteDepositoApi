@@ -1,0 +1,80 @@
+﻿@using LogicaNegocio.Entidades
+@model PageMovimientoViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    string tipoMov = ViewContext.HttpContext.Request.Query["tipoMov"];
+    string articuloId = ViewContext.HttpContext.Request.Query["articuloId"];
+    var nextPageUrl = Url.Action("TipoYArticulo", new { articuloId = @articuloId, tipoMov = @tipoMov, page = Model.PageNumber + 1 });
+    var prevPageUrl = Url.Action("TipoYArticulo", new { articuloId = @articuloId, tipoMov = @tipoMov, page = Model.PageNumber - 1 });
+
+}
+
+<h1>Movimientos por tipo y articulo</h1>
+
+
+<form action="TipoYArticulo">
+<select name="tipoMov">
+        <option value="Venta" selected=@(tipoMov == "Venta")>Venta</option>
+        <option value="Compra" selected=@(tipoMov == "Compra")>Compra</option>
+        <option value="Devolucion" selected=@(tipoMov == "Devolucion")>Devolución</option>
+</select>
+
+    <input type="text" name="articuloId" placeholder="Id Artículo" value="@articuloId" />
+    <button type="submit">Buscar</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th> Id  </th>
+            <th> Articulo </th>
+            <th> Tipo de Movimiento </th>
+            <th> Usuario </th>
+            <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Movimiento item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Articulo.NombreArt.Value)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoMov.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div>
+    Página @(Model.PageNumber + 1) de @Model.TotalPages
+</div>
+
+<div>
+    @if (Model.PageNumber > 1)
+    {
+        <a href="@prevPageUrl">Anterior</a>
+    }
+
+    @if (Model.PageNumber + 1 < Model.TotalPages)
+    {
+        <a href="@nextPageUrl">Siguiente</a>
+    }
+</div>

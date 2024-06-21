@@ -1,0 +1,14 @@
+﻿
+<h1>Login</h1>
+
+@if (@ViewBag.Mensaje != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <p>@ViewBag.Mensaje</p>
+    </div>
+}
+<form action="/usuario/login" method="post">
+    <input type="text" name="Email" placeholder="Email"></input>
+    <input type="text" name="Password" placeholder="Password"></input>
+    <button type="submit">Login</button>
+</form>

@@ -1,0 +1,28 @@
+﻿@using LogicaNegocio.Entidades
+@model IEnumerable<string>
+
+@{
+    ViewData["Title"] = "Index";
+}
+ 
+
+<table class="table">
+    <thead>
+        <tr>
+            <th> Datos  </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (string item in Model)
+        {
+            <tr>
+                <td>
+                    @item
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+ 
